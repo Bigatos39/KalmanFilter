@@ -1,0 +1,4 @@
+Open Terminal And Run
+
+	cd SimulatorData
+	make -f MakeFile
