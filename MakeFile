@@ -1,0 +1,7 @@
+CC = g++
+ROOTFLAGSLIBS = $(shell root-config  --cflags --libs)
+
+tagret = SimulatorLinearFilter
+
+all: main.cpp
+	$(CC) -o $(tagret) main.cpp $(ROOTFLAGSLIBS) && ./$(tagret) && rm $(tagret)
