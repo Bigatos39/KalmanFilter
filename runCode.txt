@@ -1,4 +1,8 @@
-Open Terminal And Run:
+1. Check FramWork C++ (Root from Cern): Open Terminal and run:
+	$root --version
+	If you don't have root, you can down this Framwork from: https://root.cern.ch
+	
+2. Open Terminal And Run:
 
-	cd SimulatorData
-	make -f MakeFile
+	$cd SimulatorData
+	$make -f MakeFile
