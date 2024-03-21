@@ -1,4 +1,4 @@
-1. Check FramWork C++ (Root from Cern)
+1. Check FrameWork C++ (Root from Cern)
    Open Terminal and run:
 	$ root --version
    If you don't have root, you can down this Framework from: https://root.cern.ch
