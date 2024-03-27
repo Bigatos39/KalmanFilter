@@ -15,9 +15,14 @@
 #include "TF1.h"
 #include "TMath.h"
 
-double GausFitForPullFunction(double *x, double *par)
+double GausFunctionForPull(double *x, double *par)
 {
 	return ((1.0 / (par[1] * sqrt(2 * TMath::Pi()))) * exp(-0.5 * pow((x[0] - par[0]) / par[1], 2)) * par[2]);
+}
+
+double GausFitForPullFunction(double *x, double *par)
+{
+	return GausFunctionForPull(x, par) + GausFunctionForPull(x, &par[3]);
 }
 
 int main()
@@ -93,8 +98,8 @@ int main()
 		h_prob -> Fill(prob);
 	}
 
-	TF1 *fitFunc = new TF1("fitFunc", GausFitForPullFunction, -5, 5, 3);
-    fitFunc -> SetParameters(0., 1., 2000);
+	TF1 *fitFunc = new TF1("fitFunc", GausFitForPullFunction, -5, 5, 6);
+    fitFunc -> SetParameters(0., 1., 2000, 0., 10, 1);
 
 	c_XPull -> cd();
 	h_XPull -> Draw();
