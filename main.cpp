@@ -30,7 +30,7 @@ int main()
 	TRint app("myApp",0,0);
 
 	const double SigmaScatter = 0.01;
-	const double Sigma = 1;
+	const double Sigma = 0.5;
     const int bin = 100;
 	int Det = 10;
 
@@ -52,7 +52,7 @@ int main()
 
 	const int Nevent = 10000; // Nevent in final det (det10) = 25923
 	Track tracks[Nevent];
-
+	
 	for (int i = 0; i < Nevent; i++)
 	{
 		kf.SetjEvent(i);

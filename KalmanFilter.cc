@@ -1,5 +1,6 @@
 #include "./HeaderFile/Track.h"
 #include "./HeaderFile/KalmanFilter.h"
+#include <iostream>
 
 KalmanFilter::KalmanFilter(): fScatter(SigmaScatter), fSigma(Sigma){};
 
@@ -52,7 +53,7 @@ void KalmanFilter::Predict(Track &track, float zNew) const
     float &Cxt = track.rCovMatrix.Cxt();
     float &Ctt = track.rCovMatrix.Ctt();
 
-    const float d = zNew - z;
+    const float d = 300;
     x += d * tx; // x = x + tx * d
     z = zNew;
 
@@ -100,6 +101,6 @@ void KalmanFilter::Update(Track &track, float xNew) const
     Cxt -= K1 * C1;
     Ctt -= K1 * C2;
 
-    track.chi2 += residual * (residual * InvS);
+    track.chi2 += pow(residual, 2) * InvS;
 	track.ndf += 1;
 }
