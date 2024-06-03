@@ -3,10 +3,10 @@
 #include "./HeaderFile/Simulator.h"
 #include "TF1.h"
 
-const float SigmaScatter = 0.0009;
+const float SigmaScatter = 0.01;
 const float Sigma = 0.5;
 const int det = 10;
-const int d = 300;
+const int d = 30;
 const float Inf = 1000;
 
 Simulator::Simulator(): fGeometry(), fScatter(SigmaScatter), fSigma(Sigma)
@@ -35,7 +35,7 @@ void Simulator::Scatter(PositionParam &tp)
 	double param[] = {0, 0.01, 1, 0.02, 0.1, 1};
 	func -> SetParameters(param);
 
-	const double alpha = fRandom -> Gaus(0, fScatter);
+	const double alpha = fRandom -> Gaus(fRandom -> Gaus(0, fScatter), fScatter);
 //	const double alpha = func -> GetRandom();
 	tp.Tx() = tan(atan(tp.Tx()) + alpha);
 }

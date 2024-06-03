@@ -2,13 +2,16 @@
 #define KALMANFILTER_H
 
 #include "Track.h"
+#include "G4Track.h"
 
 class KalmanFilter
 {
 	public:
 		KalmanFilter();
-		void Fit(Track &track);
+		void Fit(Track &track, G4Track &g4Track);
 		void SetjEvent(int &j);
+		void SetiDet(int &i);
+		void UpdateStdDev(float &sigma);
 	private:
 		void Initilize(Track &track) const;
 		void Predict(Track &track, float zNew) const;
@@ -17,7 +20,7 @@ class KalmanFilter
 
 		float fScatter;
 		float fSigma;
-		int jEvent;
+		int jEvent, iDet;
 };
 
 #endif

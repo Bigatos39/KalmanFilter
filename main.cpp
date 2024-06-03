@@ -2,9 +2,12 @@
 #include "./HeaderFile/Track.h"
 #include "./HeaderFile/KalmanFilter.h"
 #include "./HeaderFile/Simulator.h"
+#include "./HeaderFile/GetData.h"
+#include "./HeaderFile/G4Track.h"
 
 #include "Simulator.cc"
 #include "KalmanFilter.cc"
+#include "GetData.cxx"
 
 #include "TROOT.h"
 #include "TRootCanvas.h"
@@ -14,6 +17,7 @@
 #include "TH1.h"
 #include "TF1.h"
 #include "TMath.h"
+#include <algorithm>
 
 double GausFunctionForPull(double *x, double *par)
 {
@@ -29,12 +33,11 @@ int main()
 {
 	TRint app("myApp",0,0);
 
-	const double SigmaScatter = 0.01;
+	double SigmaScatter = 0.01;
 	const double Sigma = 0.5;
     const int bin = 100;
 	int Det = 10;
-
-
+	
 	Geometry geo;
 	geo.zs.resize(Det);
 	for (int i = 0; i < Det; i++)
@@ -50,7 +53,16 @@ int main()
 	KalmanFilter kf;
 	TRandom3 rand;
 
-	const int Nevent = 10000; // Nevent in final det (det10) = 25923
+	// Meas Data
+	G4Track g4Track;
+	GetDataFromG4beamline gdf("monteCarloSimulate.root");
+	gdf.GetData(g4Track);
+	gdf.CalculateScatter(g4Track);
+	gdf.CalculateStdDev(g4Track);
+
+	auto maxEvent = *max_element(g4Track.Nevents.begin(), g4Track.Nevents.begin() + det);
+
+	const int Nevent = 100;
 	Track tracks[Nevent];
 	
 	for (int i = 0; i < Nevent; i++)
@@ -64,7 +76,7 @@ int main()
 		par.Tx() = rand.Uniform(-0.5, 0.5);
 
 		sim.Simulate(par, track);
-		kf.Fit(track);
+		kf.Fit(track, g4Track);
 	}
 
 	// Show Result
@@ -96,6 +108,8 @@ int main()
 
 		double prob = TMath::Prob(chi2, track.ndf);
 		h_prob -> Fill(prob);
+
+		cout << prob << endl;
 	}
 
 	TF1 *fitFunc = new TF1("fitFunc", GausFitForPullFunction, -5, 5, 6);

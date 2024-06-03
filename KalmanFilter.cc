@@ -1,5 +1,6 @@
 #include "./HeaderFile/Track.h"
 #include "./HeaderFile/KalmanFilter.h"
+#include <cmath>
 #include <iostream>
 
 KalmanFilter::KalmanFilter(): fScatter(SigmaScatter), fSigma(Sigma){};
@@ -8,17 +9,29 @@ void KalmanFilter::SetjEvent(int &j)
 {
 	jEvent = j;
 }
+void KalmanFilter::SetiDet(int &i) {
+	iDet = i;
+}
+void KalmanFilter::UpdateStdDev(float &sigma){
+	fScatter = sigma;
+}
 
-void KalmanFilter::Fit(Track &track)
+void KalmanFilter::Fit(Track &track, G4Track &g4Track)
 {
-	int i = 0;
-	Initilize(track);
-	Predict(track, track.hits[i].z);
-	Update(track, track.hits[i].x);
-	i++;
-
-	for (; i < track.hits.size(); i++)
+	for (int i = 0; i < track.hits.size(); i++)
 	{
+		if (jEvent >= g4Track.Nevents[i]) {
+		//	continue;
+		}	
+
+		SetiDet(i);
+
+		if (i == 0) {
+			Initilize(track);
+			Predict(track, track.hits[i].z);
+			Update(track, track.hits[i].x);
+		}
+//		UpdateStdDev(g4Track.stdDevTx[i]);
 		Predict(track, track.hits[i].z);
 		Noise(track);
 		Update(track, track.hits[i].x);
@@ -40,7 +53,7 @@ void KalmanFilter::Initilize(Track &track) const
 	track.rCovMatrix.Ctt() = Inf;
 
 	track.chi2 = 0;
-	track.ndf = -2;
+	track.ndf = -1;
 }
 
 void KalmanFilter::Predict(Track &track, float zNew) const
@@ -53,8 +66,9 @@ void KalmanFilter::Predict(Track &track, float zNew) const
     float &Cxt = track.rCovMatrix.Cxt();
     float &Ctt = track.rCovMatrix.Ctt();
 
-    const float d = 300;
-    x += d * tx; // x = x + tx * d
+	float d = zNew - z;
+
+	x += d * tx; // x = x + tx * d
     z = zNew;
 
     // C = F * C * F.T
@@ -85,6 +99,8 @@ void KalmanFilter::Update(Track &track, float xNew) const
 
     float S = pow(fSigma, 2) + Cxx; // H * C * H.T = C
     float InvS = 1 / S;
+
+//	cout << "Meas: " << xNew << "\tEst: " << x << endl;
 
     // K = (1 / S) * C
     float K0 = Cxx * InvS;

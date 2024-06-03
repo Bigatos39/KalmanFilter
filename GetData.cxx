@@ -50,14 +50,22 @@ inline void GetDataFromG4beamline::GetData(G4Track &g4Track) const {
 }
 
 inline void GetDataFromG4beamline::CalculateScatter(G4Track &g4Track) const {
-	for (int i = 0; i < DET - 1; i++) {
+	for (int i = 0; i < DET; i++) {
 		for (int entry = 0; entry < g4Track.Nevents[i]; entry++) {
-			float tx; // tan(scatter)
-			float dz = 300; // const in g4beamline
-			float x1 = g4Track.pointTrack[entry].pointInDet[i].r[0];
-			float x2 = g4Track.pointTrack[entry].pointInDet[i + 1].r[0];	
-			tx = (x2 - x1) / dz;
-			// Save
+			float tx;
+			if (i == 0) {
+				tx = g4Track.pointTrack[entry].pointInDet[i].r[0] / 1000;
+			} else if (i > 0){
+				if (entry >= g4Track.Nevents[i - 1]) {
+					int dz = 1000 + 300 * i;
+					tx = g4Track.pointTrack[entry].pointInDet[i].r[0] / dz;
+				} else {
+					float x2 = g4Track.pointTrack[entry].pointInDet[i].r[0];
+					float x1 = g4Track.pointTrack[entry].pointInDet[i - 1].r[0];
+					int dz = 300;
+					tx = x2 - x1 / dz;
+				}
+			}
 			g4Track.pointTrack[entry].pointInDet[i].r[1] = tx;
 		}
 	}
@@ -76,9 +84,6 @@ inline void GetDataFromG4beamline::CalculateStdDev(G4Track &g4Track) const {
 			stdDevTx += pow(stdDevMeanTx - atan(g4Track.pointTrack[j].pointInDet[i].r[1]), 2);
 		}
 		stdDevTx = sqrt(stdDevTx / pow(g4Track.Nevents[i], 2));
-
-		cout << stdDevTx << endl;
-
 		g4Track.stdDevTx.push_back(stdDevTx);
 		g4Track.stdDevX.push_back(0.5);
 	}
