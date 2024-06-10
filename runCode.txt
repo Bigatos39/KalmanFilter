@@ -4,5 +4,5 @@
    If you don't have root, you can down this Framework from: https://root.cern.ch
 	
 2. Open Terminal And Run:
-	$ cd SimulatorData
+	$ cd src
 	$ make -f MakeFile

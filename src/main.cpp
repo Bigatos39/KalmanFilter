@@ -141,12 +141,24 @@ int main()
 	h_TxPull -> GetXaxis() -> SetTitle("pull_tx");
 	h_TxPull -> GetYaxis() -> SetTitle("Entries");
 
-	c_chi2 -> SaveAs("~/Desktop/Track - Fitting/Khoá luận/Figures/Chi2_WithKGaus.pdf");
-	c_prob -> SaveAs("~/Desktop/Track - Fitting/Khoá luận/Figures/Prob_WithKGaus.pdf");
-	c_XPull -> SaveAs("~/Desktop/Track - Fitting/Khoá luận/Figures/PullX_WithKGaus.pdf");
-	c_TxPull -> SaveAs("~/Desktop/Track - Fitting/Khoá luận/Figures/PullTx_WithKGaus.pdf");
+	
+	c_chi2 -> SaveAs("/Users/nguyenhoangkhavi/Desktop/Track - Fitting/Khoá luận/Figures/Chi2_WithKGaus.pdf");
+	c_prob -> SaveAs("/Users/nguyenhoangkhavi/Desktop/Track - Fitting/Khoá luận/Figures/Prob_WithKGaus.pdf");
+	c_XPull -> SaveAs("/Users/nguyenhoangkhavi/Desktop/Track - Fitting/Khoá luận/Figures/PullX_WithKGaus.pdf");
+	c_TxPull -> SaveAs("/Users/nguyenhoangkhavi/Desktop/Track - Fitting/Khoá luận/Figures/PullTx_WithKGaus.pdf");
 
 	app.Run();
+
+	// Delete Pointer
+    delete fitFunc;
+    delete c_TxPull;
+    delete c_prob;
+    delete c_XPull;
+    delete c_chi2;
+    delete h_prob;
+    delete h_chi2;
+    delete h_XPull;
+    delete h_TxPull;
 
 	return 0;
 }
