@@ -1,12 +1,10 @@
-# Kalman Gain Calculation and Current Value Estimation
-
+# Kalman Filter
 ## Kalman Gain Calculation:
 
 The Kalman Gain ($KG$) is computed as follows:
-
-\[
+$
 KG = \dfrac{E_{EST}}{E_{EST} + E_{MEA}}
-\]
+$
 
 Where:
 - \( E_{EST} \) is the prediction error.
@@ -16,9 +14,9 @@ The resulting \( KG \) value satisfies \( 0 \leq KG \leq 1 \).
 
 The update equation for estimating the current value (\( EST_t \)) is:
 
-\[
+$
 EST_t = EST_{t - 1} + KG \left[MEA - EST_{t - 1}\right]
-\]
+$
 
 The Kalman Gain helps stabilize the difference between predicted and measured values in estimating new states from previous ones.
 
@@ -30,32 +28,32 @@ The Kalman Gain helps stabilize the difference between predicted and measured va
 
 ### Prediction of New State:
 Predictions for the next state are made using parameters of the previous state:
-\[
+$
 r_{k | k - 1} = F \cdot r_{k - 1}
-\]
+$
 and the predicted covariance matrix:
-\[
+$
 C_{k | k - 1} = F \cdot C_{k - 1} \cdot F^T + Q_k
-\]
+$
 
 ### State Update:
 - Calculation of the Kalman Gain matrix:
-\[
+$
 K = \dfrac{C \cdot H}{H \cdot C \cdot H^T + V_k}
-\]
+$
 Where:
   - \( H = \begin{bmatrix} 0 && 1 \end{bmatrix} \)
   - \( V_k \) is the covariance matrix.
 
 - Update of state vector:
-\[
+$
 r_k = r_{k | k - 1} \cdot K\left[y_k - H \cdot r_{k | k - 1}\right]
-\]
+$
 
 - Update of covariance matrix:
-\[
+$
 C_{k} = \left(I - K \cdot H\right) \cdot C_{k | k - 1}
-\]
+$
 Where \( I \) is the identity matrix.
 
 ### Algorithm Iteration:
