@@ -24,20 +24,16 @@ struct PositionParam
 		r[1] = txNew;
 	};
 
-	float X(float zNew) const
-	{
+	float X(float zNew) const {
 		return r[1] * (zNew - z) + r[0];
 	};
-	float &X()
-	{
+	float &X() {
 		return r[0];
 	};
-	float &Tx()
-	{
+	float &Tx() {
 		return r[1];
 	};
-	float &Z()
-	{
+	float &Z() {
 		return z;
 	};
 
@@ -47,16 +43,13 @@ struct PositionParam
 
 struct CovMatrix
 {
-	float &Cxx()
-	{
+	float &Cxx() {
 		return c[0];
 	};
-	float &Cxt()
-	{
+	float &Cxt() {
 		return c[1];
 	};
-	float &Ctt()
-	{
+	float &Ctt() {
 		return c[2];
 	};
 

@@ -1,5 +1,5 @@
-#ifndef KALMANFILTER_H
-#define KALMANFILTER_H
+#ifndef KF_H
+#define KF_H
 
 #include "Track.h"
 
@@ -7,15 +7,14 @@ class KalmanFilter
 {
 	public:
 		KalmanFilter();
-		void Fit(Track &track);
+		inline void Fit(Track &track);
 		void SetjEvent(int &j);
 		void SetiDet(int &i);
-		void UpdateStdDev(float &sigma);
 	private:
-		void Initilize(Track &track) const;
-		void Predict(Track &track, float zNew) const;
-		void Noise(Track &track) const;
-		void Update(Track &track, float xNew) const;
+		inline void Initilize(Track &track) const;
+		inline void Predict(Track &track, float zNew) const;
+		inline void Noise(Track &track) const;
+		inline void Update(Track &track, float xNew) const;
 
 		float fScatter;
 		float fSigma;

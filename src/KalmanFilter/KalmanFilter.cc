@@ -12,11 +12,8 @@ void KalmanFilter::SetjEvent(int &j)
 void KalmanFilter::SetiDet(int &i) {
 	iDet = i;
 }
-void KalmanFilter::UpdateStdDev(float &sigma){
-	fScatter = sigma;
-}
 
-void KalmanFilter::Fit(Track &track)
+inline void KalmanFilter::Fit(Track &track)
 {
 	int i = 0;
 	Initilize(track);
@@ -31,7 +28,7 @@ void KalmanFilter::Fit(Track &track)
 	}
 }
 
-void KalmanFilter::Initilize(Track &track) const
+inline void KalmanFilter::Initilize(Track &track) const
 {
 	// Position
 	track.Param.X() = 0;
@@ -49,7 +46,7 @@ void KalmanFilter::Initilize(Track &track) const
 	track.ndf = -2;
 }
 
-void KalmanFilter::Predict(Track &track, float zNew) const
+inline void KalmanFilter::Predict(Track &track, float zNew) const
 {
     float &x = track.Param.X();
     float &tx = track.Param.Tx();
@@ -70,7 +67,7 @@ void KalmanFilter::Predict(Track &track, float zNew) const
     Cxx += d * (Ctx + Cxt);
 }
 
-void KalmanFilter::Noise(Track &track) const
+inline void KalmanFilter::Noise(Track &track) const
 {
     // C = C + Q
 	float &tx = track.Param.Tx();
@@ -79,7 +76,7 @@ void KalmanFilter::Noise(Track &track) const
 	Ctt += Q;
 }
 
-void KalmanFilter::Update(Track &track, float xNew) const
+inline void KalmanFilter::Update(Track &track, float xNew) const
 {
 	float &x = track.Param.X();
 	float &tx = track.Param.Tx();
