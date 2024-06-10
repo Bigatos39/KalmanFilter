@@ -62,7 +62,7 @@ int main()
 
 	auto maxEvent = *max_element(g4Track.Nevents.begin(), g4Track.Nevents.begin() + det);
 
-	const int Nevent = 100;
+	const int Nevent = maxEvent;
 	Track tracks[Nevent];
 	
 	for (int i = 0; i < Nevent; i++)
@@ -82,7 +82,8 @@ int main()
 	// Show Result
 	TCanvas *c_XPull = new TCanvas();
 	TCanvas *c_TxPull = new TCanvas();
-	TCanvas *c_chi2_prob = new TCanvas( "", "", 1400, 500);
+	TCanvas *c_chi2 = new TCanvas();
+	TCanvas *c_prob = new TCanvas();
 	TH1 *h_XPull = new TH1F("X Pull", "X Pull", bin, -5, 5);
 	TH1 *h_TxPull = new TH1F("Tx Pull", "Tx Pull", bin, -5, 5);
 	TH1 *h_chi2 = new TH1F("Chi Square", "Chi Square", bin, 0, 40);
@@ -108,8 +109,6 @@ int main()
 
 		double prob = TMath::Prob(chi2, track.ndf);
 		h_prob -> Fill(prob);
-
-		cout << prob << endl;
 	}
 
 	TF1 *fitFunc = new TF1("fitFunc", GausFitForPullFunction, -5, 5, 6);
@@ -123,19 +122,36 @@ int main()
 	h_TxPull -> Draw();
     h_TxPull -> Fit(fitFunc);
 
-    c_chi2_prob -> Divide(2,1);
-	c_chi2_prob -> cd(1);
+	c_chi2 -> cd();
 	h_chi2 -> Draw();
-	c_chi2_prob -> cd(2);
+	
+	c_prob -> cd();
 	h_prob -> Draw();
 
-	c_chi2_prob -> Modified();
+	c_chi2 -> Modified();
+	c_prob -> Modified();
 	c_XPull -> Modified();
 	c_TxPull -> Modified();
 
-	c_chi2_prob -> Update();
+	c_chi2 -> Update();
+	c_prob -> Update();
 	c_XPull -> Update();
 	c_TxPull -> Update();
+
+	h_chi2 -> GetXaxis() -> SetTitle("chi2");
+	h_chi2 -> GetYaxis() -> SetTitle("Entries");
+	h_prob -> GetXaxis() -> SetTitle("prob");
+	h_prob -> GetYaxis() -> SetTitle("Entries");
+
+	h_XPull -> GetXaxis() -> SetTitle("pull_x");
+	h_XPull -> GetYaxis() -> SetTitle("Entries");
+
+	h_TxPull -> GetXaxis() -> SetTitle("pull_tx");
+	h_TxPull -> GetYaxis() -> SetTitle("Entries");
+
+	c_chi2 -> SaveAs("~/Desktop/Track - Fitting/Khoá luận/Figures/Chi2_WithKGaus.pdf");
+	c_prob -> SaveAs("~/Desktop/Track - Fitting/Khoá luận/Figures/Prob_WithKGaus.pdf");
+
 
 	app.Run();
 

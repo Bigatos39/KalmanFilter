@@ -18,20 +18,13 @@ void KalmanFilter::UpdateStdDev(float &sigma){
 
 void KalmanFilter::Fit(Track &track, G4Track &g4Track)
 {
-	for (int i = 0; i < track.hits.size(); i++)
-	{
-		if (jEvent >= g4Track.Nevents[i]) {
-		//	continue;
-		}	
-
-		SetiDet(i);
-
-		if (i == 0) {
-			Initilize(track);
-			Predict(track, track.hits[i].z);
-			Update(track, track.hits[i].x);
-		}
-//		UpdateStdDev(g4Track.stdDevTx[i]);
+	int i = 0;
+	Initilize(track);
+	Predict(track, track.hits[i].z);
+	Update(track, track.hits[i].x);
+	i++;
+	
+	for (; i < 10; i++) {
 		Predict(track, track.hits[i].z);
 		Noise(track);
 		Update(track, track.hits[i].x);
@@ -53,7 +46,7 @@ void KalmanFilter::Initilize(Track &track) const
 	track.rCovMatrix.Ctt() = Inf;
 
 	track.chi2 = 0;
-	track.ndf = -1;
+	track.ndf = -2;
 }
 
 void KalmanFilter::Predict(Track &track, float zNew) const
@@ -95,7 +88,7 @@ void KalmanFilter::Update(Track &track, float xNew) const
 	float &Cxt = track.rCovMatrix.Cxt();
 	float &Ctt = track.rCovMatrix.Ctt();
 
-    float residual = x - xNew;
+    float residual = xNew - x;
 
     float S = pow(fSigma, 2) + Cxx; // H * C * H.T = C
     float InvS = 1 / S;
@@ -107,8 +100,8 @@ void KalmanFilter::Update(Track &track, float xNew) const
     float K1 = Cxt * InvS;
 
     // Update State Vector: r = r - K * (x - xNew)
-    x  -= K0 * residual;
-    tx -= K1 * residual;
+    x  += K0 * residual;
+    tx += K1 * residual;
 
     // Update Covariance Matrix: C = C - K * H * C
     float C1 = Cxx;
@@ -117,6 +110,6 @@ void KalmanFilter::Update(Track &track, float xNew) const
     Cxt -= K1 * C1;
     Ctt -= K1 * C2;
 
-    track.chi2 += pow(residual, 2) * InvS;
+    track.chi2 += residual * InvS * residual;
 	track.ndf += 1;
 }
