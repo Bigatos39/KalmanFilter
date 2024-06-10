@@ -2,9 +2,7 @@
 ## Kalman Gain Calculation:
 
 The Kalman Gain ($KG$) is computed as follows:
-$
-KG = \dfrac{E_{EST}}{E_{EST} + E_{MEA}}
-$
+$KG = \dfrac{E_{EST}}{E_{EST} + E_{MEA}}$
 
 Where:
 - \( E_{EST} \) is the prediction error.
