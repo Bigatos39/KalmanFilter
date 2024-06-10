@@ -52,7 +52,7 @@ int main()
 	KalmanFilter kf;
 	TRandom3 rand;
 
-	const int Nevent = 200000;
+	const int Nevent = 100000;
 	Track tracks[Nevent];
 	
 	for (int i = 0; i < Nevent; i++)
