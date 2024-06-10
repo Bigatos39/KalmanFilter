@@ -32,7 +32,7 @@ $C_{k | k - 1} = F \cdot C_{k - 1} \cdot F^T + Q_k$
 - Calculation of the Kalman Gain matrix:
 $K = \dfrac{C \cdot H}{H \cdot C \cdot H^T + V_k}$
 Where:
-  - $H = \begin{bmatrix} 0 \\ 1 \end{bmatrix}$
+- $H = \begin{bmatrix} 0 \\ 1 \end{bmatrix}$ is the observation matrix.
   - $V_k$ is the covariance matrix.
 
 - Update of state vector:
