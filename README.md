@@ -44,4 +44,4 @@ Where $I$ is the identity matrix.
 
 ### Algorithm Iteration:
 - If $k < n$, the position $k \longrightarrow \left(k - 1\right)$ and updated values are used for the next computation.
-- If $k \gg n$, the algorithm terminates.
+- If $k \geq n$, the algorithm terminates.
