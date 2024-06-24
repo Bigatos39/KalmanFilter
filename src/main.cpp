@@ -14,6 +14,7 @@
 #include "TH1.h"
 #include "TF1.h"
 #include "TMath.h"
+#include "TStyle.h"
 
 #include <iostream>
 #include <algorithm>
@@ -74,10 +75,10 @@ int main()
 	TCanvas *c_TxPull = new TCanvas();
 	TCanvas *c_chi2 = new TCanvas();
 	TCanvas *c_prob = new TCanvas();
-	TH1 *h_XPull = new TH1F("X Pull", "X Pull", bin, -5, 5);
-	TH1 *h_TxPull = new TH1F("Tx Pull", "Tx Pull", bin, -5, 5);
-	TH1 *h_chi2 = new TH1F("Chi Square", "Chi Square", bin, 0, 40);
-	TH1 *h_prob = new TH1F("Prob", "Prob", bin, -0.05, 1.05);
+	TH1 *h_XPull = new TH1F("x Pull", "", bin, -5, 5);
+	TH1 *h_TxPull = new TH1F("tx Pull", "", bin, -5, 5);
+	TH1 *h_chi2 = new TH1F("chi2", "", bin, 0, 40);
+	TH1 *h_prob = new TH1F("", "", bin, -0.05, 1.05);
 
 	for (int i = 0; i < Nevent; i++)
 	{
@@ -117,6 +118,7 @@ int main()
 	
 	c_prob -> cd();
 	h_prob -> Draw();
+//	gStyle -> SetOptStat(0);
 
 	c_chi2 -> Modified();
 	c_prob -> Modified();
