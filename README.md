@@ -31,7 +31,9 @@ $C_{k | k - 1} = F_k \cdot C_{k - 1 | k - 1} \cdot F_k^T + Q_k$
 
 ### State Update:
 - Calculation of the Kalman Gain matrix:
+  
 $K_k = \dfrac{C_{k | k - 1} \cdot H_k}{H_k \cdot C_{k | k - 1} \cdot H_k^T + V_k}$
+
 Where:
 - $H_k$ is the observation matrix.
 - $V_k$ is the variance matrix.
