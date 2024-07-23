@@ -1,7 +1,8 @@
 # Kalman Filter
 ## Kalman Gain Calculation:
 
-The Kalman Gain ($KG$) is computed as follows: \\ 
+The Kalman Gain ($KG$) is computed as follows:
+
 $KG = \dfrac{E_{EST}}{E_{EST} + E_{MEA}}$
 
 Where:
