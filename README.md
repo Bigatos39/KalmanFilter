@@ -20,8 +20,8 @@ The Kalman Gain helps stabilize the difference between predicted and measured va
 ## Current Value Estimation with $k$ from $0 \longrightarrow n$:
 
 ### Preparation of Previous State Parameters:
-- When there are no predictions yet, the previous state is initialized with an initial state vector ($r0$) and an initial covariance matrix ($C0$).
-- After predictions and updates, state parameters are derived from the previous state updates ($r_{k - 1}, C_{k - 1}$).
+- When there are no predictions yet, the previous state is initialized with an initial state vector ($r_0$) and an initial covariance matrix ($C_0$).
+- After predictions and updates, state parameters are derived from the previous state updates ($r_{k - 1 | k - 1}, C_{k - 1 | k - 1}$).
 
 ### Prediction of New State:
 Predictions for the next state are made using parameters of the previous state:
